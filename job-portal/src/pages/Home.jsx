@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { FaBookmark } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import { CiLocationOn, CiBookmarkPlus } from "react-icons/ci";
+import { GrOrganization } from "react-icons/gr";
 import BookmarkedJobsModal from "../components/Bookmark";
 const Home = () => {
   const [jobPreference, setJobPreference] = useState("");
@@ -87,6 +89,7 @@ const Home = () => {
 
   return (
     <>
+      {/* Navbar section */}
       <div
         style={{
           backgroundColor: "#1a365d",
@@ -99,24 +102,29 @@ const Home = () => {
           margin: "auto",
         }}
       >
-        {/* Heading */}
         <div style={{ marginLeft: "20px" }}>
           <h1>FIND JOBS</h1>
         </div>
-        <div style={{ marginRight: "20px" }}>
-          <button
-            onClick={() => setShowBookmarks(!ShowBookmarks)}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <FaBookmark size={20} />
-          </button>
+        <div
+          onClick={() => setShowBookmarks(!ShowBookmarks)}
+          style={{
+            cursor: "pointer",
+            marginRight: "20px",
+          }}
+        >
+          <FaBookmark size={20} />
         </div>
       </div>
 
-      <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-        <div style={{ marginBottom: "20px" }}>
+      <div style={{ width: "81%", margin: "auto" }}>
+        {/* Search section */}
+        <div
+          style={{
+            padding: "20px",
+            justifyContent: "center",
+            display: "flex",
+          }}
+        >
           <input
             type="text"
             value={jobPreference}
@@ -138,53 +146,10 @@ const Home = () => {
             Search Jobs
           </button>
         </div>
+
+        {/* Search result section */}
         <div style={{ display: `${Showsearchresult ? "block" : "none"}` }}>
           <h2>SEARCH RESULT</h2>
-          <div>
-            {jobs.length > 0 ? (
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {jobs.map((job, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      border: "1px solid #ccc",
-                      padding: "15px",
-                      marginBottom: "10px",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <h3>{job.title}</h3>
-                    <p>
-                      <strong>Company:</strong> {job.company}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {job.location}
-                    </p>
-                    <p>
-                      <strong>Description:</strong> {job.description}
-                    </p>
-                    <button
-                      onClick={() => bookmarkJob(job)}
-                      style={{ padding: "5px 10px", marginTop: "10px" }}
-                    >
-                      Bookmark Job
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>
-                No job recommendations yet. Please enter your preferences and
-                search.
-              </p>
-            )}
-          </div>
-        </div>
-        <BookmarkedJobsModal
-          {...{ ShowBookmarks, bookmarkedJobs, closeModal }}
-        />
-        {/* <div style={{ display: `${ShowBookmarks ? "block" : "none"}` }}>
-          <h2>Bookmarked Jobs</h2>
           <div>
             {bookmarkedJobs.length > 0 ? (
               <ul style={{ listStyle: "none", padding: 0 }}>
@@ -198,12 +163,26 @@ const Home = () => {
                       borderRadius: "5px",
                     }}
                   >
-                    <h3>{job.title}</h3>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div>
+                        <h3>{job.title}</h3>
+                      </div>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => bookmarkJob(job)}
+                      >
+                        <CiBookmarkPlus size={25} />
+                      </div>
+                    </div>
                     <p>
-                      <strong>Company:</strong> {job.company}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {job.location}
+                      <GrOrganization /> {job.company} <CiLocationOn />{" "}
+                      {job.location}
                     </p>
                     <p>
                       <strong>Description:</strong> {job.description}
@@ -212,11 +191,17 @@ const Home = () => {
                 ))}
               </ul>
             ) : (
-              <p>No bookmarked jobs yet.</p>
+              <p>
+                No job recommendations yet. Please enter your preferences and
+                search.
+              </p>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
+
+      {/* Bookmarked jobs section */}
+      <BookmarkedJobsModal {...{ ShowBookmarks, bookmarkedJobs, closeModal }} />
     </>
   );
 };
