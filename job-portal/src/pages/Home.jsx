@@ -13,14 +13,14 @@ const Home = () => {
   const [prompt, setPrompt] = useState("");
   const [ShowBookmarks, setShowBookmarks] = useState(false);
   const [Showsearchresult, setShowsearchresult] = useState(false);
-  const { Search, AllJobs, isError } = useSelector((state) => state.JobReducer);
+  const { Search, AllJobs, isError, isLoading } = useSelector(
+    (state) => state.JobReducer
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(GetAllBookmarkedJobs());
   }, [dispatch]);
-
-  console.log(AllJobs);
 
   const closeModal = () => {
     setShowBookmarks(false);
@@ -95,17 +95,19 @@ const Home = () => {
             onClick={fetchJobs}
             style={{
               padding: "10px 20px",
-              backgroundColor: "#0080ff",
+              backgroundColor: prompt ? "#0080ff" : "#cccccc",
               color: "white",
               border: "none",
-              cursor: "pointer",
+              cursor: prompt ? "pointer" : "not-allowed",
               borderRadius: "5px",
             }}
-            disabled={prompt === "" ? true : false}
+            disabled={!prompt}
           >
             Search Jobs
           </button>
         </div>
+
+        {isLoading && <h3 style={{ textAlign: "center" }}>Loading...</h3>}
 
         {/* Search result section */}
         <div style={{ display: `${Showsearchresult ? "block" : "none"}` }}>

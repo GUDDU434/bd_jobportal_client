@@ -14,8 +14,6 @@ export const SearchJobs = (data) => {
       const res = await axiosInstance.post(`/jobs/recomendation`, data);
       const jobs = res?.data;
 
-      console.log(jobs);
-
       if (jobs.status === 200) {
         dispatch({ type: SEARCH, payload: jobs?.data });
       } else {
