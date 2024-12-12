@@ -1,10 +1,20 @@
 import React from "react";
+import { CiLocationOn } from "react-icons/ci";
+import { GrOrganization } from "react-icons/gr";
+import { MdDeleteForever } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { RemoveFromBookmark } from "../redux/jobs/job.action";
 
 const BookmarkedJobsModal = ({ ShowBookmarks, bookmarkedJobs, closeModal }) => {
+  const dispatch = useDispatch();
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       closeModal();
     }
+  };
+
+  const removeBookmark = (jobId) => {
+    dispatch(RemoveFromBookmark(jobId));
   };
 
   return (
@@ -69,12 +79,26 @@ const BookmarkedJobsModal = ({ ShowBookmarks, bookmarkedJobs, closeModal }) => {
                         borderRadius: "5px",
                       }}
                     >
-                      <h3>{job.title}</h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          <h3>{job.title}</h3>
+                        </div>
+                        <div
+                          style={{ cursor: "pointer" }}
+                          onClick={() => removeBookmark(job?._id)}
+                        >
+                          <MdDeleteForever size={25} />
+                        </div>
+                      </div>
                       <p>
-                        <strong>Company:</strong> {job.company}
-                      </p>
-                      <p>
-                        <strong>Location:</strong> {job.location}
+                        <GrOrganization /> {job.company} <CiLocationOn />{" "}
+                        {job.location}
                       </p>
                       <p>
                         <strong>Description:</strong> {job.description}
