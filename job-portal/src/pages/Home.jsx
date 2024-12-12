@@ -1,90 +1,37 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { CiLocationOn, CiBookmarkPlus } from "react-icons/ci";
+import React, { useEffect, useState } from "react";
+import { CiBookmarkPlus, CiLocationOn } from "react-icons/ci";
+import { FaBookmark } from "react-icons/fa";
 import { GrOrganization } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
 import BookmarkedJobsModal from "../components/Bookmark";
+import {
+  AddToBookmark,
+  GetAllBookmarkedJobs,
+  SearchJobs,
+} from "../redux/jobs/job.action";
 const Home = () => {
-  const [jobPreference, setJobPreference] = useState("");
-  const [jobs, setJobs] = useState([]);
-  const [bookmarkedJobs, setBookmarkedJobs] = useState([
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-    {
-      company: "Masai",
-      location: "Bengaluru",
-      description: "Software Engineer",
-      title: "Full Stack Developer",
-    },
-  ]);
+  const [prompt, setPrompt] = useState("");
   const [ShowBookmarks, setShowBookmarks] = useState(false);
   const [Showsearchresult, setShowsearchresult] = useState(false);
+  const { Search, AllJobs, isError } = useSelector((state) => state.JobReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(GetAllBookmarkedJobs());
+  }, [dispatch]);
+
+  console.log(AllJobs);
 
   const closeModal = () => {
     setShowBookmarks(false);
   };
 
-  const handleInputChange = (e) => {
-    setJobPreference(e.target.value);
+  const fetchJobs = () => {
+    dispatch(SearchJobs({ prompt })).then(() => setShowsearchresult(true));
   };
 
-  const fetchJobs = async () => {
-    try {
-      const response = await axios.post("/api/jobs", {
-        preference: jobPreference,
-      });
-      setJobs(response.data);
-      setShowsearchresult(true);
-    } catch (error) {
-      setShowsearchresult(true);
-      console.error("Error fetching jobs:", error);
-    }
-  };
-
-  const bookmarkJob = async (job) => {
-    try {
-      const response = await axios.post("/api/bookmark", job);
-      if (response.status === 200) {
-        setBookmarkedJobs([...bookmarkedJobs, job]);
-        alert("Job bookmarked successfully!");
-      }
-    } catch (error) {
-      console.error("Error bookmarking job:", error);
-    }
+  const bookmarkJob = (job) => {
+    dispatch(AddToBookmark({ ...job }));
   };
 
   return (
@@ -112,12 +59,24 @@ const Home = () => {
             marginRight: "20px",
           }}
         >
+          <div
+            style={{
+              padding: "1px",
+              backgroundColor: "red",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+              borderRadius: " 50%",
+            }}
+          >
+            {AllJobs?.length}
+          </div>
           <FaBookmark size={20} />
         </div>
       </div>
 
+      {/* Search section */}
       <div style={{ width: "81%", margin: "auto" }}>
-        {/* Search section */}
         <div
           style={{
             padding: "20px",
@@ -127,8 +86,8 @@ const Home = () => {
         >
           <input
             type="text"
-            value={jobPreference}
-            onChange={handleInputChange}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
             placeholder="Enter job preferences (e.g., React developer jobs in Mumbai)"
             style={{ width: "30%", padding: "10px", marginRight: "10px" }}
           />
@@ -142,6 +101,7 @@ const Home = () => {
               cursor: "pointer",
               borderRadius: "5px",
             }}
+            disabled={prompt === "" ? true : false}
           >
             Search Jobs
           </button>
@@ -150,10 +110,12 @@ const Home = () => {
         {/* Search result section */}
         <div style={{ display: `${Showsearchresult ? "block" : "none"}` }}>
           <h2>SEARCH RESULT</h2>
-          <div>
-            {bookmarkedJobs.length > 0 ? (
+          <div style={{ overflowY: "scroll", height: "400px" }}>
+            {isError != null ? (
+              <p>{isError?.error}</p>
+            ) : Search?.length > 0 ? (
               <ul style={{ listStyle: "none", padding: 0 }}>
-                {bookmarkedJobs.map((job, index) => (
+                {Search?.map((job, index) => (
                   <li
                     key={index}
                     style={{
@@ -201,7 +163,9 @@ const Home = () => {
       </div>
 
       {/* Bookmarked jobs section */}
-      <BookmarkedJobsModal {...{ ShowBookmarks, bookmarkedJobs, closeModal }} />
+      <BookmarkedJobsModal
+        {...{ ShowBookmarks, bookmarkedJobs: AllJobs, closeModal }}
+      />
     </>
   );
 };

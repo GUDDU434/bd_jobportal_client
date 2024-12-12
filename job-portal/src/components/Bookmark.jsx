@@ -55,12 +55,11 @@ const BookmarkedJobsModal = ({ ShowBookmarks, bookmarkedJobs, closeModal }) => {
               style={{
                 overflowY: "auto",
                 maxHeight: "600px",
-                
               }}
             >
-              {bookmarkedJobs.length > 0 ? (
+              {bookmarkedJobs?.length > 0 ? (
                 <ul style={{ listStyle: "none", padding: 0 }}>
-                  {bookmarkedJobs.map((job, index) => (
+                  {bookmarkedJobs?.map((job, index) => (
                     <li
                       key={index}
                       style={{
