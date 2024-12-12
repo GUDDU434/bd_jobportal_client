@@ -1,9 +1,10 @@
 import {
+  ADD_TO_BOOKMARK,
   ERROR_IN_GET_JOB,
   GET_ALL_JOBS,
   JOB_LOADING,
+  REMOVE_FROM_BOOKMARK,
   SEARCH,
-  ADD_TO_BOOKMARK
 } from "./job.action";
 
 const initialJobState = {
@@ -40,6 +41,13 @@ export const Reducer = (state = initialJobState, { type, payload }) => {
         isLoading: false,
         isError: null,
         AllJobs: [...state.AllJobs, payload],
+      };
+    case REMOVE_FROM_BOOKMARK:
+      return {
+        ...state,
+        isLoading: false,
+        isError: null,
+        AllJobs: state.AllJobs.filter((job) => job._id !== payload),
       };
     case SEARCH:
       return {

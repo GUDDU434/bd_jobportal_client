@@ -5,6 +5,7 @@ export const JOB_LOADING = "JOB_LOADING";
 export const ERROR_IN_GET_JOB = "ERROR_IN_GET_JOB";
 export const SEARCH = "SEARCH";
 export const ADD_TO_BOOKMARK = "ADD_TO_BOOKMARK";
+export const REMOVE_FROM_BOOKMARK = "REMOVE_FROM_BOOKMARK";
 
 export const SearchJobs = (data) => {
   return async (dispatch) => {
@@ -48,10 +49,10 @@ export const RemoveFromBookmark = (id) => {
   return async (dispatch) => {
     dispatch({ type: JOB_LOADING });
     try {
-      const res = await axiosInstance.delete(`/api/v1/posts/${id}`);
+      const res = await axiosInstance.delete(`/jobs/bookmark-job/${id}`);
       const jobs = res?.data;
       if (jobs.status === 200) {
-        dispatch({ type: GET_ALL_JOBS, payload: jobs?.data });
+        dispatch({ type: REMOVE_FROM_BOOKMARK, payload: id });
       } else {
         dispatch({ type: ERROR_IN_GET_JOB, payload: jobs?.message });
       }
