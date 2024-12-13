@@ -2,6 +2,9 @@
 
 **FIND JOBS** is a simple and intuitive job portal application built with React. This project allows users to browse, search, and apply for jobs seamlessly. Whether you're a job seeker or a developer looking to contribute, this app makes finding opportunities easy.
 
+## Bckaend Repository
+Backend Repo: https://github.com/GUDDU434/bd_jobportal_server
+
 ---
 
 ## 🚀 Features
