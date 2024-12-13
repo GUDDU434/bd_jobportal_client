@@ -18,6 +18,8 @@ const Home = () => {
   );
   const dispatch = useDispatch();
 
+  console.log(isError);
+
   useEffect(() => {
     dispatch(GetAllBookmarkedJobs());
   }, [dispatch]);
@@ -114,7 +116,9 @@ const Home = () => {
           <h2>SEARCH RESULT</h2>
           <div style={{ overflowY: "scroll", height: "400px" }}>
             {isError != null ? (
-              <p>{isError?.error}</p>
+              <p>
+                {typeof isError?.error === "string" || "Something went wrong"}
+              </p>
             ) : Search?.length > 0 ? (
               <ul style={{ listStyle: "none", padding: 0 }}>
                 {Search?.map((job, index) => (
