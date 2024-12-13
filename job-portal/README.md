@@ -20,8 +20,8 @@ Follow these steps to set up and run the project locally:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/find-jobs.git
-cd find-jobs
+git clone https://github.com/GUDDU434/bd_jobportal_client.git
+cd bd_jobportal_client
 ```
 
 ### 2. Install dependencies
@@ -43,4 +43,4 @@ The app should now be running at `http://localhost:3000`.
 Contributions are welcome! Feel free to open issues or pull requests.
 
 ### Contributor(s):
-Guddu Ali
+Guddu Ali(https://github.com/GUDDU434)
