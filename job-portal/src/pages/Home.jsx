@@ -52,7 +52,7 @@ const Home = () => {
         }}
       >
         <div style={{ marginLeft: "20px" }}>
-          <h1>FIND JOBS - Dev</h1>
+          <h1>FIND JOBS 🧑‍💼</h1>
         </div>
         <div
           onClick={() => setShowBookmarks(!ShowBookmarks)}
